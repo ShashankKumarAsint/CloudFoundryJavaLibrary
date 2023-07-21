@@ -2,7 +2,7 @@ package com.java.CloudFoundryJavaLibrary.Model;
 
 import java.util.List;
 
-public class Organization {
+public class CloudOrg {
 	
 	private String organizationName;
 	

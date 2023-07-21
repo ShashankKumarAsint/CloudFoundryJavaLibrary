@@ -9,12 +9,13 @@ public class Configuration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable() // Disable CSRF protection for all endpoints
+            .csrf().disable() 
             .authorizeRequests()
-                .antMatchers("/**").permitAll() // Permit all requests to /public endpoints
-                .anyRequest().authenticated() // Require authentication for all other endpoints
+                .antMatchers("/**").permitAll() 
+                .anyRequest().authenticated()
             .and()
             .formLogin();
     }
+    
 }
 

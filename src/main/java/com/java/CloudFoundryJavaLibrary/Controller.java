@@ -1,17 +1,19 @@
 package com.java.CloudFoundryJavaLibrary;
 
+import java.util.List;
+import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import com.java.CloudFoundryJavaLibrary.Model.CloudInformation;
-import com.java.CloudFoundryJavaLibrary.Model.Organization;
+import com.java.CloudFoundryJavaLibrary.Model.CloudOrg;
 
 @RestController
 @RequestMapping("/api/cloudfoundry")
 public final class Controller {
-	
 	
 	private Service service ;
 	
@@ -20,12 +22,20 @@ public final class Controller {
 	}
 
 	@PostMapping("/resources")
-	public Organization getSubAccountDetails(@RequestBody CloudInformation information ) {
-
+	public CloudOrg getSubAccountDetails(@RequestBody CloudInformation information ) {
 		return service.getInformationFromCloud(information);
-		
 	}
-
 	
+	@GetMapping("/getuser")
+	public JsonNode getUserRoles() {	
+		return service.getUserRoles();		
+	}
+	
+	
+	  @GetMapping("/userroles")
+	  public Map<String,List<String>> getUserBySpecificRole(){
+		  return service.getUserBySpecificRole();
+	  }
+	  
 
 }

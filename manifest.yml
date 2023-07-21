@@ -1,0 +1,17 @@
+applications:
+  - name: Cloud-Foundry-Connection-Demo
+    memory: 1024M
+    instances: 1
+    path: ./target/CloudFoundryJavaLibrary-0.0.1-SNAPSHOT.jar
+    buildpack: sap_java_buildpack
+    requires:
+      - name: xsuaa_service
+    env:
+      TARGET_RUNTIME: tomcat
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+resources:
+  - name: xsuaa_service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: apiaccess

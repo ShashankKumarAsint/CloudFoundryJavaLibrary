@@ -33,7 +33,7 @@ public final class Controller {
 	
 	
 	  @GetMapping("/userroles")
-	  public Map<String,List<String>> getUserBySpecificRole(){
+	  public Map<String,List<Map<String, String>>> getUserBySpecificRole(){
 		  return service.getUserBySpecificRole();
 	  }
 	  

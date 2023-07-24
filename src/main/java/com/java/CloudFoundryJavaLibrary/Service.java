@@ -86,7 +86,7 @@ public class Service {
 	}
 
 	public String getToken() {
-
+		
 		String jsonData = System.getenv(this.serviceKey);
 		String urlData = getCredentials(jsonData, this.accessKeyUrl)+"/oauth/token";
 		String clientIdData = getCredentials(jsonData, this.clientId);
@@ -126,9 +126,9 @@ public class Service {
 	public String getUserDetailsFromUAA() {
 		
 	    String jsonData = System.getenv(this.serviceKey);
-	    String uaaUrl = getCredentials(jsonData, this.apiUrl);
-	    logger.info("apiUrl : "+uaaUrl);
-		String usersEndpoint = uaaUrl + "/Users";
+	    String apiUrl = getCredentials(jsonData, this.apiUrl);
+	    logger.info("apiUrl : "+apiUrl);
+		String usersEndpoint = apiUrl + "/Users";
 	    String accessToken = null;
 
 	        accessToken = getToken();
@@ -161,20 +161,27 @@ public class Service {
 	}
 
 
-	public Map<String, List<String>> getUserBySpecificRole() {
+	public Map<String, List<Map<String, String>>> getUserBySpecificRole() {
 
 		String role = this.serviceRole;
-		Map<String, List<String>> users = new HashMap<>();
+		Map<String, List<Map<String, String>>> users = new HashMap<>();
 		JsonNode nodes = getUserRoles();
 		for (JsonNode node : nodes) {
 			for (JsonNode innerNode : node.get("groups")) {
 				if (innerNode.get("value").asText().equals(role)) {
 					if (users.get(role) != null) {
-						users.get(role).add(node.get("emails").get(0).get("value").asText());
+						Map<String, String> userData = new HashMap<>();
+						userData.put("email", node.get("emails").get(0).get("value").asText());
+						userData.put("firstName", node.get("name").get("givenName").asText());
+						userData.put("lastName", node.get("name").get("familyName").asText());
+						users.get(role).add(userData);
 					} else {
-						List<String> tempList = new ArrayList<>();
-						String userEmail = node.get("emails").get(0).get("value").asText();
-						tempList.add(userEmail);
+						List<Map<String, String>> tempList = new ArrayList<>();
+						Map<String, String> userData = new HashMap<>();
+						userData.put("email", node.get("emails").get(0).get("value").asText());
+						userData.put("firstName", node.get("name").get("givenName").asText());
+						userData.put("lastName", node.get("name").get("familyName").asText());
+						tempList.add(userData);
 						users.put(role, tempList);
 					}
 				}
